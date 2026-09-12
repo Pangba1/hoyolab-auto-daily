@@ -36,13 +36,15 @@ jobs:
         if: always()
         run: |
           if [ "${{ job.status }}" = "success" ]; then
-            TITLE="✅ Hoyolab签到成功"
-            CONTENT="所有账号签到完成！"
+            TITLE="Hoyolab签到成功"
+            CONTENT="所有账号签到完成"
           else
-            TITLE="❌ Hoyolab签到失败"
-            CONTENT="签到过程出错，请查看 GitHub Actions 日志。"
+            TITLE="Hoyolab签到失败"
+            CONTENT="签到过程出错，请查看GitHub Actions日志"
           fi
-          curl -s "https://sctapi.ftqq.com/${{ secrets.SERVERCHAN_SENDKEY }}.send?title=${TITLE}&desp=${CONTENT}"
+          curl -s -G "https://sctapi.ftqq.com/${{ secrets.SERVERCHAN_SENDKEY }}.send" \
+            --data-urlencode "title=${TITLE}" \
+            --data-urlencode "desp=${CONTENT}"
   workflow-keepalive:
     if: github.event_name == 'schedule'
     runs-on: ubuntu-latest
